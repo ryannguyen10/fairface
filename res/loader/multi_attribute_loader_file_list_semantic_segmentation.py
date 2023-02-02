@@ -13,30 +13,23 @@ import torch
 project_root = os.getcwd()
 data_root = "%s/data"%project_root
 
-labelval_to_category={60:'building',
-                      59:'curb',
-                      11:'humans',
-                      58:'road',
-                      57:'sidewalk',
-                      0:'sky',
-                      129:'trees',
-                      31:'unknown',
-                      56:'vegetation',
-                      1:'unknown',
-                      255:'car',
+labelval_to_category={60:'White',
+                      59:'Black',
+                      11:'Latino_Hispanic',
+                      58:'East Asian',
+                      57:'Southeast Asian',
+                      0:'Indian',
+                      129:'Middle Eastern',
 }
 
 category_to_class_number = {
-    'sky': 0,
-    'building': 1,
-    'humans': 2,
-    'road': 3,
-    'curb': 4,
-    'sidewalk': 5,
-    'trees': 6,
-    'vegetation': 7,
-    'unknown': 8,
-    'car':9
+    'White': 0,
+    'Black': 1,
+    'Latino_Hispanic': 2,
+    'East Asian': 3,
+    'Southeast Asian': 4,
+    'Indian': 5,
+    'Middle Eastern': 6,
 }
 
 def format_label(imarray):
@@ -94,7 +87,6 @@ class FileListFolder(data.Dataset):
         """
         Args:
             index (int): Index
-
         Returns:
             tuple: (sample, target) where target is class_index of the target class.
         """
