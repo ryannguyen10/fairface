@@ -11,7 +11,7 @@ import numpy as np
 import torch
 
 project_root = os.getcwd()
-data_root = "%sdata"%project_root
+data_root = "%s/data"%project_root
 
 labelval_to_category={60:'White',
                       59:'Black',
@@ -55,7 +55,7 @@ def make_dataset(list_file, data_dir):
 
         for line in lines:
             image = line.rstrip()
-            images.append("%s/%s"%(data_dir,image))
+            images.append("%s%s"%(data_dir,image))
             label = image.replace('images/frame','labels/label_frame')
             labels.append(label)
 
