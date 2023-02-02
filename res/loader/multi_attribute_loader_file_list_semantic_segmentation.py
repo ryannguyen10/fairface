@@ -11,7 +11,7 @@ import numpy as np
 import torch
 
 project_root = os.getcwd()
-data_root = "%s/data"%project_root
+data_root = "%sdata"%project_root
 
 labelval_to_category={60:'White',
                       59:'Black',
