@@ -4,9 +4,6 @@ cd data/
 mkdir -p facial_image
 cd facial_image
 
-wget https://www.dropbox.com/s/gafl7acfi1xlqni/fairface-img-margin025-trainval.zip?dl=0 -O fairface-img-margin025-trainval.zip
-unzip fairface-img-margin025-trainval.zip
-mv train fairface_train_data
-
-rm fairface-img-margin025-trainval.zip
-rm fairface_train_data
+wget https://www.dropbox.com/s/dgz042tqztip4rt/dataset.tar.gz?dl=0 -O dataset.tar.gz
+tar -zxf dataset.tar.gz
+rm dataset.tar.gz
