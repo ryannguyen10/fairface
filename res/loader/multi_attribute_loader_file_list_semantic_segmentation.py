@@ -40,7 +40,7 @@ def format_label(imarray):
     imarray[imarray>150] = 9
     
     label_size = imarray.shape[0]
-    num_classes = 10
+    num_classes = 7
     formatted_label = np.zeros((num_classes, label_size, label_size))
     for i in range(num_classes):
         formatted_label[i] = imarray==i
