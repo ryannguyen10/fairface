@@ -37,7 +37,7 @@ def format_label(imarray):
     for val in labelval_to_category.keys():
         imarray[imarray==val] = category_to_class_number[labelval_to_category[val]]
         
-    imarray[imarray>150] = 9
+    imarray[imarray>150] = 6
     
     label_size = imarray.shape[0]
     num_classes = 7
