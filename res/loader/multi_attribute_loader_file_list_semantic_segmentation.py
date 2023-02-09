@@ -55,7 +55,7 @@ def make_dataset(list_file, data_dir):
 
         for line in lines:
             image = line.rstrip()
-            images.append("%s%s"%(data_dir,image))
+            images.append("%s/%s"%(data_dir,image))
             label = image.replace('images/frame','labels/label_frame')
             labels.append(label)
 
