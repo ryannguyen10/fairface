@@ -16,10 +16,10 @@ data_root = "%s/data"%project_root
 labelval_to_category={60:'White',
                       59:'Black',
                       11:'Latino_Hispanic',
-                      58:'East Asian',
-                      57:'Southeast Asian',
+                      58:'East_Asian',
+                      57:'Southeast_Asian',
                       0:'Indian',
-                      129:'Middle Eastern',
+                      129:'Middle_Eastern',
 }
 
 category_to_class_number = {
