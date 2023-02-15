@@ -26,10 +26,10 @@ category_to_class_number = {
     'White': 0,
     'Black': 1,
     'Latino_Hispanic': 2,
-    'East Asian': 3,
-    'Southeast Asian': 4,
+    'East_Asian': 3,
+    'Southeast_Asian': 4,
     'Indian': 5,
-    'Middle Eastern': 6,
+    'Middle_Eastern': 6,
 }
 
 def format_label(imarray):
