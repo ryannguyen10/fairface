@@ -99,8 +99,8 @@ class FileListFolder(data.Dataset):
 
         if self.transform is not None:
             transformed_sample = self.transform(sample)
-        if self.target_transform is not None:
-            target = self.transform(label)
+#        if self.target_transform is not None:
+#            target = self.target_transform(label)
         
         formatted_label = format_label(label)
         return transformed_sample, formatted_label, impath
