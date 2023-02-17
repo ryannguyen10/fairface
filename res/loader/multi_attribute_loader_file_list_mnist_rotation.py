@@ -58,14 +58,13 @@ class FileListFolder(data.Dataset):
         
         impath = self.samples[index]
         imname = impath.split('/')[-1]
-        race, viewpoint, _ = imname.split('')
+        race = imname.split('_')
      
-        azimuth_num = int(rotation)
         cat_num = int(race)
       
 
         sample = Image.open(impath)    
-        sample_label = [0, azimuth_num, 0, cat_num]
+        sample_label = [0, cat_num]
         
         floated_labels = []
         for s in sample_label:
