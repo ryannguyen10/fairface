@@ -57,8 +57,8 @@ class FileListFolder(data.Dataset):
         """
         
         impath = self.samples[index]
-        imname = impath.split('/')[-1]
-        race, viewpoint, _ = imname.split('/')
+#        imname = impath.split('/')[-1]
+        race, viewpoint, _ = impath.split('/')
      
         azimuth_num = int(viewpoint)
 
