@@ -25,10 +25,6 @@ import os.path
 import sys
 import numpy as np
 
-from google.colab import drive
-drive.mount('/content/drive')
-os.chdir('/content/drive/MyDrive/')
-
 mapping = {}
 
 # open the CSV file
