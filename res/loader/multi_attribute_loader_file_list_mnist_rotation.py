@@ -9,6 +9,79 @@ import os.path
 import sys
 import numpy as np
 import torch
+import csv
+import pandas as pd
+import os
+import json
+import torch
+import torch.utils.data as data
+from torchvision import datasets, models, transforms
+IN_SIZE = 224
+import pickle
+from PIL import Image
+import matplotlib.pyplot as plt
+import os
+import os.path
+import sys
+import numpy as np
+
+from google.colab import drive
+drive.mount('/content/drive')
+os.chdir('/content/drive/MyDrive/')
+
+mapping = {}
+
+# open the CSV file
+with open('fairface_label_train.csv', 'r') as csv_file:
+    csv_reader = csv.reader(csv_file)
+
+    # skip the header row
+    next(csv_reader)
+
+    # loop through the rows in the CSV file
+    for row in csv_reader:
+        filename, gender, race = row
+
+        # add the mapping to the dictionary
+        mapping[filename] = gender, race
+
+# write the mapping to a file
+with open('mapping.txt', 'w') as map_file:
+    for filename, label in mapping.items():
+        map_file.write(f"{filename} {label}\n")
+        
+# write the dictionary to a JSON file
+with open('mapping.json', 'w') as json_file:
+    json.dump(mapping, json_file)
+
+# load the CSV file into a DataFrame
+df = pd.read_csv('fairface_label_train.csv')
+
+# load the mapping file
+with open('mapping.json') as f:
+    mapping = json.load(f)
+
+# set the directory where the files are located
+directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
+
+# loop through each file in the directory
+for filename in os.listdir(directory):
+    # create the full file paths for the old and new filenames
+    labels = mapping[filename]
+    gender = int(labels[0])
+    race = int(labels[1])
+
+    data = []
+    datas = f"{gender}_{race}_{filename}"
+    data.append(datas)
+
+    old_file_path = os.path.join(directory, filename)
+
+    for n in data: 
+      new_file_path = os.path.join(directory, n)
+    # rename the file
+    
+    os.rename(old_file_path, new_file_path)
 
 def make_dataset(list_file, data_dir):
         images = []
