@@ -63,9 +63,9 @@ directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval
 # loop through each file in the directory
 for filename in os.listdir(directory):
     # create the full file paths for the old and new filenames
-    class = mapping[filename]
-    gender = int(class[0])
-    race = int(class[1])
+    la = mapping[filename]
+    gender = int(la[0])
+    race = int(la[1])
 
     data = []
     datas = f"{gender}_{race}_{filename}"
