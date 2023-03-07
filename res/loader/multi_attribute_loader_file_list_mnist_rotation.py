@@ -1,29 +1,19 @@
-import torch.utils.data as data
-from torchvision import datasets, models, transforms
-IN_SIZE = 224
-import pickle
-from PIL import Image
-import matplotlib.pyplot as plt
-import os
-import os.path
-import sys
-import numpy as np
-import torch
 import csv
 import pandas as pd
 import os
 import json
-import torch
 import torch.utils.data as data
 from torchvision import datasets, models, transforms
 IN_SIZE = 224
 import pickle
 from PIL import Image
 import matplotlib.pyplot as plt
-import os
-import os.path
 import sys
 import numpy as np
+import os.path
+import torch
+from PIL import Image
+
 
 mapping = {}
 
@@ -49,14 +39,14 @@ with open('mapping.txt', 'w') as map_file:
 # write the dictionary to a JSON file
 with open('mapping.json', 'w') as json_file:
     json.dump(mapping, json_file)
-
+    
 # load the CSV file into a DataFrame
 df = pd.read_csv('fairface_label_train.csv')
 
 # load the mapping file
 with open('mapping.json') as f:
     mapping = json.load(f)
-
+ 
 # set the directory where the files are located
 directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 
@@ -67,18 +57,12 @@ for filename in os.listdir(directory):
     gender = int(la[0])
     race = int(la[1])
 
-    data = []
+    data_file = []
     datas = f"{gender}_{race}_{filename}"
-    data.append(datas)
+    data_file.append(datas)
 
     old_file_path = os.path.join(directory, filename)
-
-    for n in data: 
-      new_file_path = os.path.join(directory, n)
-    # rename the file
     
-    os.rename(old_file_path, new_file_path)
-
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
@@ -95,10 +79,12 @@ def make_dataset(list_file, data_dir):
 
         return images, labels
 
+from torch.utils.data import Dataset
+
 class FileListFolder(data.Dataset):
     def __init__(self, file_list, attributes_dict, transform, data_dir):
         samples,targets  = make_dataset(file_list, data_dir)
-
+        
         if len(samples) == 0:
             raise(RuntimeError("Found 0 samples"))
 
@@ -120,16 +106,15 @@ class FileListFolder(data.Dataset):
         """
         Args:
             index (int): Index
-
         Returns:
             tuple: (sample, target) where target is class_index of the target class.
         """
         
         impath = self.samples[index]
         imname = impath.split('_')[0]
-        race, viewpoint, _ = la.split('_')
+        race, gender, _ = la.split('_')
      
-        azimuth_num = int(viewpoint)
+        azimuth_num = int(gender)
 
         cat_num = int(race)
       
@@ -162,3 +147,9 @@ class FileListFolder(data.Dataset):
         # tmp = '    Target Transforms (if any): '
         # fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
         return fmt_str
+
+    for n in data_file: 
+      new_file_path = os.path.join(directory, n)
+    # rename the file
+    
+    os.rename(old_file_path, new_file_path)
