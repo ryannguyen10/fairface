@@ -119,12 +119,7 @@ class FileListFolder(data.Dataset):
         impath = self.samples[index]
         imname = impath.split('_')[0]
         #race, gender, _ = la.split('_')
-        race, gender = [s.split('_') for s in la]
-     
-        azimuth_num = int(gender)
-
-        cat_num = int(race)
-      
+        race, gender = [s.split('_') for s in la]      
 
         sample = Image.open(impath)    
         sample_label = [0, azimuth_num, 0, cat_num]
