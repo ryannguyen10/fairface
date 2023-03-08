@@ -46,7 +46,7 @@ df = pd.read_csv('fairface_label_train.csv')
 # load the mapping file
 with open('mapping.json') as f:
     mapping = json.load(f)
- 
+    
 # set the directory where the files are located
 directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 
@@ -62,6 +62,12 @@ for filename in os.listdir(directory):
     data_file.append(datas)
 
     old_file_path = os.path.join(directory, filename)
+
+    for n in data_file: 
+      new_file_path = os.path.join(directory, n)
+    # rename the file
+    
+    os.rename(old_file_path, new_file_path)
     
 def make_dataset(list_file, data_dir):
         images = []
@@ -147,9 +153,3 @@ class FileListFolder(data.Dataset):
         # tmp = '    Target Transforms (if any): '
         # fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
         return fmt_str
-
-    for n in data_file: 
-      new_file_path = os.path.join(directory, n)
-    # rename the file
-    
-    os.rename(old_file_path, new_file_path)
