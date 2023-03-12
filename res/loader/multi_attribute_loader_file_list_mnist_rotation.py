@@ -69,6 +69,8 @@ for filename in os.listdir(directory):
     
     os.rename(old_file_path, new_file_path)
     
+    filename = os.path.basename(new_file_path)
+    
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
