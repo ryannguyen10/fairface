@@ -71,19 +71,6 @@ for filename in os.listdir(directory):
     
     new_filename = os.path.basename(new_file_path)
     
-    file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
-    abs_file_path = os.path.abspath(file_path)
-    with open(abs_file_path, "r") as file:
-        data = file.read()
-
-    # Replace the name 'John' with 'Sarah'
-    new_data = data.replace(filename, new_filename)
-
-
-    # Open the same file for writing
-    with open(abs_file_path, 'w') as file:
-        file.write(new_data)
-    
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
@@ -164,3 +151,17 @@ class FileListFolder(data.Dataset):
         # tmp = '    Target Transforms (if any): '
         # fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
         return fmt_str
+    
+file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
+abs_file_path = os.path.abspath(file_path)
+with open(abs_file_path, "r") as file:
+      data = file.read()
+
+for filename in os.listdir(directory):
+    # Replace the name 'John' with 'Sarah'
+    new_data = data.replace(filename, new_filename)
+
+
+    # Open the same file for writing
+    with open(abs_file_path, 'w') as file:
+        file.write(new_data)
