@@ -50,6 +50,9 @@ with open('mapping.json') as f:
 # set the directory where the files are located
 directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 
+file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
+abs_file_path = os.path.abspath(file_path)
+
 # loop through each file in the directory
 for filename in os.listdir(directory):
     # create the full file paths for the old and new filenames
@@ -57,20 +60,18 @@ for filename in os.listdir(directory):
     gender = int(la[0])
     race = int(la[1])
 
-    data_file = []
-    datas = f"{gender}_{race}_{filename}"
-    data_file.append(datas)
+    new_filenames = []
+    new_filename = f"{gender}_{race}_{filename}"
+    new_filenames.append(new_filename)
 
     old_file_path = os.path.join(directory, filename)
 
-    for n in data_file: 
-      new_file_path = os.path.join(directory, n)
-    # rename the file
-    
-    os.rename(old_file_path, new_file_path)
-    
-    new_filename = os.path.basename(new_file_path)
-    
+    # loop through each new file name and rename the file
+    for new_filename in new_filenames:
+        new_file_path = os.path.join(directory, new_filename)
+        os.rename(old_file_path, new_file_path)
+        old_file_path = new_file_path
+   
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
