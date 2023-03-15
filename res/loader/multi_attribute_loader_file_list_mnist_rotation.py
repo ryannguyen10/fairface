@@ -124,8 +124,8 @@ class FileListFolder(data.Dataset):
         #race, gender, _ = la.split('_')
         gender, race = [s.split('_') for s in la]      
 
-        azimuth_num = int(race)
-        cat_num = int(gender)
+        azimuth_num = race
+        cat_num = gender
         
         sample = Image.open(impath)    
         sample_label = [0, azimuth_num, 0, cat_num]
