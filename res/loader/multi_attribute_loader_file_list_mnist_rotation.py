@@ -132,7 +132,7 @@ class FileListFolder(data.Dataset):
         
         floated_labels = []
         for s in sample_label:
-            floated_labels.append(float(s))
+            floated_labels.append(s)
 
         if self.transform is not None:
             transformed_sample = self.transform(sample)
