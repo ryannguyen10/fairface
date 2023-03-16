@@ -133,6 +133,8 @@ class FileListFolder(data.Dataset):
         floated_labels = []
         for s in sample_label:
             floated_labels.append(s)
+            
+        floated_labels = [s.split(',') for s in floated_labels]      
 
         if self.transform is not None:
             transformed_sample = self.transform(sample)
