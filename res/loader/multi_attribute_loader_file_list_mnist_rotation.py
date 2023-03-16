@@ -120,9 +120,8 @@ class FileListFolder(data.Dataset):
         """
         
         impath = self.samples[index]
-        imname = impath.split('_')[0]
-        #race, gender, _ = la.split('_')
-        gender, race = [s.split('_') for s in la]      
+        imname = impath.split('_')[-1].split('.')[0]
+        gender, race = impath.split('_')[:2]    
 
         azimuth_num = race
         cat_num = gender
@@ -130,6 +129,8 @@ class FileListFolder(data.Dataset):
         sample = Image.open(impath)    
         sample_label = [0, azimuth_num, 0, cat_num]
         
+        floated_labels = [int(s) for s in sample_label]
+
         floated_labels = []
         for s in sample_label:
             floated_labels.append(s)
