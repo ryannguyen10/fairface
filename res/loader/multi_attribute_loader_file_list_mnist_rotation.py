@@ -120,8 +120,8 @@ class FileListFolder(data.Dataset):
         """
         
         impath = self.samples[index]
-        imname = impath.split('_')[-1].split('.')[0]
-        gender, race = impath.split('_')[:2]    
+        imname = impath.split('/')[-1]
+        gender, race, _ = imname.split('_')
 
         azimuth_num = int(gender)
         cat_num = int(race)
