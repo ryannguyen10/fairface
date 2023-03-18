@@ -14,6 +14,9 @@ import os.path
 import torch
 from PIL import Image
    
+directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
+file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
+
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
