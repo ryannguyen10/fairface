@@ -18,22 +18,6 @@ directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 new_filenames = []
 
-import csv
-import pandas as pd
-import os
-import json
-import torch.utils.data as data
-from torchvision import datasets, models, transforms
-IN_SIZE = 224
-import pickle
-from PIL import Image
-import matplotlib.pyplot as plt
-import sys
-import numpy as np
-import os.path
-import torch
-from PIL import Image
-
 mapping = {}
 
 # open the CSV file
