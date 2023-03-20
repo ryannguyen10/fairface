@@ -91,13 +91,13 @@ def make_dataset(list_file, data_dir):
 
 
         return images, labels
-    
+
 from torch.utils.data import Dataset
 
 class FileListFolder(data.Dataset):
     def __init__(self, file_list, attributes_dict, transform, data_dir):
-        samples,targets  = make_dataset(data_dir, [])
-
+        samples,targets  = make_dataset(file_list, data_dir)
+        
         if len(samples) == 0:
             raise(RuntimeError("Found 0 samples"))
 
@@ -122,30 +122,30 @@ class FileListFolder(data.Dataset):
         Returns:
             tuple: (sample, target) where target is class_index of the target class.
         """
-
+        
         impath = self.samples[index]
         imname = impath.split('/')[-1]
-        gender, race = imname.split('_')
+        gender, race, _ = imname.split('_')
 
         azimuth_num = int(gender)
         cat_num = int(race)
-
-        sample = Image.open(impath)
+      
+        sample = Image.open(impath)    
         sample_label = [0, azimuth_num, 0, cat_num]
 
         floated_labels = [int(s) for s in sample_label]
-
+        
         floated_labels = []
         for s in sample_label:
-            floated_labels.append(s)
+            floated_labels.append((float(s)))
 
         if self.transform is not None:
             transformed_sample = self.transform(sample)
 
         transformed_labels = torch.LongTensor(floated_labels)
         stacked_transformed_sample = torch.stack((transformed_sample[0],transformed_sample[0],transformed_sample[0]))
-
-        return stacked_transformed
+        
+        return stacked_transformed_sample, transformed_labels, impath
 
     def __len__(self):
         return len(self.samples)
