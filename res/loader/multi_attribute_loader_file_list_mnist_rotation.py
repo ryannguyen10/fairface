@@ -32,7 +32,7 @@ def make_dataset(file_list, data_dir):
     return images, labels
 
 def rename_files(data_dir):
-    images, labels = make_dataset(file_path, data_dir)
+    images, labels = make_dataset(data_dir)
     for i, img_path in enumerate(images):
         img_dir, img_filename = os.path.split(img_path)
         new_filename = labels[i] + '.jpg'
@@ -41,9 +41,13 @@ def rename_files(data_dir):
         images[i] = new_img_path
 
     list_file_path = os.path.join(data_dir, 'list.txt')
+    with open(list_file_path, 'r') as f:
+        file_list = f.readlines()
+    new_file_list = []
+    for i in range(len(images)):
+        new_file_list.append(labels[i] + '\n')
     with open(list_file_path, 'w') as f:
-        for label in labels:
-            f.write(label + '\n')
+        f.writelines(new_file_list)
 
 rename_files(directory)
 
