@@ -18,21 +18,18 @@ directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 new_filenames = []
 
-def make_dataset(file_list, data_dir):
+def make_dataset(data_dir, labels):
     images = []
-    labels = []
-    with open(file_list, 'r') as f:
-        lines = f.readlines()
-    for line in lines:
-        fname = line.strip()
-        if fname.endswith('.jpg'):
-            path = os.path.join(data_dir, fname)
-            images.append(path)
-            labels.append(fname[:-4])
+    for root, _, fnames in sorted(os.walk(data_dir)):
+        for fname in fnames:
+            if fname.endswith('.jpg'):
+                path = os.path.join(root, fname)
+                images.append(path)
+                labels.append(fname[:-4])
     return images, labels
 
 def rename_files(data_dir):
-    images, labels = make_dataset(data_dir)
+    images, labels = make_dataset(data_dir, [])
     for i, img_path in enumerate(images):
         img_dir, img_filename = os.path.split(img_path)
         new_filename = labels[i] + '.jpg'
@@ -49,12 +46,12 @@ def rename_files(data_dir):
     with open(list_file_path, 'w') as f:
         f.writelines(new_file_list)
 
-rename_files(directory)
+from torch.utils.data import Dataset
 
 class FileListFolder(data.Dataset):
     def __init__(self, file_list, attributes_dict, transform, data_dir):
-        samples,targets  = make_dataset(file_list, data_dir)
-        
+        samples,targets  = make_dataset(data_dir, [])
+
         if len(samples) == 0:
             raise(RuntimeError("Found 0 samples"))
 
@@ -79,30 +76,30 @@ class FileListFolder(data.Dataset):
         Returns:
             tuple: (sample, target) where target is class_index of the target class.
         """
-        
+
         impath = self.samples[index]
         imname = impath.split('/')[-1]
         gender, race, _ = imname.split('_')
 
         azimuth_num = int(gender)
         cat_num = int(race)
-        
-        sample = Image.open(impath)    
+
+        sample = Image.open(impath)
         sample_label = [0, azimuth_num, 0, cat_num]
-        
+
         floated_labels = [int(s) for s in sample_label]
 
         floated_labels = []
         for s in sample_label:
             floated_labels.append(s)
-            
+
         if self.transform is not None:
             transformed_sample = self.transform(sample)
 
         transformed_labels = torch.LongTensor(floated_labels)
         stacked_transformed_sample = torch.stack((transformed_sample[0],transformed_sample[0],transformed_sample[0]))
-        
-        return stacked_transformed_sample, transformed_labels, impath
+
+        return stacked_transformed
 
     def __len__(self):
         return len(self.samples)
