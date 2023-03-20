@@ -18,19 +18,21 @@ directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 new_filenames = []
 
-def make_dataset(data_dir):
+def make_dataset(file_list, data_dir):
     images = []
     labels = []
-    for root, _, fnames in sorted(os.walk(data_dir)):
-        for fname in fnames:
-            if fname.endswith('.jpg'):
-                path = os.path.join(root, fname)
-                images.append(path)
-                labels.append(fname[:-4])
+    with open(file_list, 'r') as f:
+        lines = f.readlines()
+    for line in lines:
+        fname = line.strip()
+        if fname.endswith('.jpg'):
+            path = os.path.join(data_dir, fname)
+            images.append(path)
+            labels.append(fname[:-4])
     return images, labels
 
 def rename_files(data_dir):
-    images, labels = make_dataset(data_dir)
+    images, labels = make_dataset(file_path, data_dir)
     for i, img_path in enumerate(images):
         img_dir, img_filename = os.path.split(img_path)
         new_filename = labels[i] + '.jpg'
@@ -39,15 +41,11 @@ def rename_files(data_dir):
         images[i] = new_img_path
 
     list_file_path = os.path.join(data_dir, 'list.txt')
-    with open(list_file_path, 'r') as f:
-        file_list = f.readlines()
-    new_file_list = []
-    for i in range(len(images)):
-        new_file_list.append(labels[i] + '\n')
     with open(list_file_path, 'w') as f:
-        f.writelines(new_file_list)
+        for label in labels:
+            f.write(label + '\n')
 
-from torch.utils.data import Dataset
+rename_files(directory)
 
 class FileListFolder(data.Dataset):
     def __init__(self, file_list, attributes_dict, transform, data_dir):
@@ -108,10 +106,4 @@ class FileListFolder(data.Dataset):
     def __repr__(self):
         fmt_str = 'Dataset ' + self.__class__.__name__ + '\n'
 
-        fmt_str += '    Number of datapoints: {}\n'.format(self.__len__())
-        fmt_str += '    Root Location: {}\n'.format(self.root)
-        tmp = '    Transforms (if any): '
-        fmt_str += '{0}{1}\n'.format(tmp, self.transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
-        # tmp = '    Target Transforms (if any): '
-        # fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
-        return fmt_str
+        fmt_str += '    Number of datap
