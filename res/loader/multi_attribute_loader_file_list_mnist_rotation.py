@@ -18,34 +18,80 @@ directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 new_filenames = []
 
-def make_dataset(data_dir, labels):
-    images = []
-    for root, _, fnames in sorted(os.walk(data_dir)):
-        for fname in fnames:
-            if fname.endswith('.jpg'):
-                path = os.path.join(root, fname)
-                images.append(path)
-                labels.append(fname[:-4])
-    return images, labels
+import csv
+import pandas as pd
+import os
+import json
+import torch.utils.data as data
+from torchvision import datasets, models, transforms
+IN_SIZE = 224
+import pickle
+from PIL import Image
+import matplotlib.pyplot as plt
+import sys
+import numpy as np
+import os.path
+import torch
+from PIL import Image
 
-def rename_files(data_dir):
-    images, labels = make_dataset(data_dir, [])
-    for i, img_path in enumerate(images):
-        img_dir, img_filename = os.path.split(img_path)
-        new_filename = labels[i] + '.jpg'
-        new_img_path = os.path.join(img_dir, new_filename)
-        os.rename(img_path, os.path.join(img_dir, new_filename))
-        images[i] = new_img_path
+mapping = {}
 
-    list_file_path = os.path.join(data_dir, 'list.txt')
-    with open(list_file_path, 'r') as f:
-        file_list = f.readlines()
-    new_file_list = []
-    for i in range(len(images)):
-        new_file_list.append(labels[i] + '\n')
-    with open(list_file_path, 'w') as f:
-        f.writelines(new_file_list)
+# open the CSV file
+with open('fairface_label_train.csv', 'r') as csv_file:
+    csv_reader = csv.reader(csv_file)
 
+    # skip the header row
+    next(csv_reader)
+
+    # loop through the rows in the CSV file
+    for row in csv_reader:
+        filename, gender, race = row
+
+        # add the mapping to the dictionary
+        mapping[filename] = gender, race
+
+# write the mapping to a file
+with open('mapping.txt', 'w') as map_file:
+    for filename, label in mapping.items():
+        map_file.write(f"{filename} {label}\n")
+
+# write the dictionary to a JSON file
+with open('mapping.json', 'w') as json_file:
+    json.dump(mapping, json_file)
+
+# load the CSV file into a DataFrame
+df = pd.read_csv('fairface_label_train.csv')
+
+# load the mapping file
+with open('mapping.json') as f:
+    mapping = json.load(f)
+
+
+# set the directory where the files are located
+directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
+
+file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
+abs_file_path = os.path.abspath(file_path)
+
+# loop through each file in the directory
+for filename in os.listdir(directory):
+    # create the full file paths for the old and new filenames
+    la = mapping[filename]
+    gender = int(la[0])
+    race = int(la[1])
+
+    new_filenames = []
+    new_filename = f"{gender}_{race}_{filename}"
+    new_filenames.append(new_filename)
+
+    old_file_path = os.path.join(directory, filename)
+
+    # loop through each new file name and rename the file
+    for new_filename in new_filenames:
+        new_file_path = os.path.join(directory, new_filename)
+        os.rename(old_file_path, new_file_path)
+        old_file_path = new_file_path
+        
 from torch.utils.data import Dataset
 
 class FileListFolder(data.Dataset):
