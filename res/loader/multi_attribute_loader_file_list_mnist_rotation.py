@@ -34,7 +34,7 @@ def rename_files(data_dir):
         img_dir, img_filename = os.path.split(img_path)
         new_filename = labels[i] + '.jpg'
         new_img_path = os.path.join(img_dir, new_filename)
-        os.rename(img_path, new_img_path)
+        os.rename(img_path, os.path.join(img_dir, new_filename))
         images[i] = new_img_path
 
     list_file_path = os.path.join(data_dir, 'list.txt')
