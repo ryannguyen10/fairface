@@ -76,6 +76,22 @@ for filename in os.listdir(directory):
         os.rename(old_file_path, new_file_path)
         old_file_path = new_file_path
         
+def make_dataset(list_file, data_dir):
+        images = []
+        labels = []
+
+        with open(list_file,'r') as F:
+            lines = F.readlines()
+
+        for line in lines:
+            image = line.rstrip()
+            images.append("%s/%s"%(data_dir,image))
+            label = image
+            labels.append("%s/%s"%(data_dir,label))
+
+
+        return images, labels
+    
 from torch.utils.data import Dataset
 
 class FileListFolder(data.Dataset):
