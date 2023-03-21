@@ -42,7 +42,7 @@ with open('fairface_label_val.csv', 'r') as csv_file:
         val_mapping[filename] = gender, race
 
 # write the dictionary to a JSON file
-with open('mapping.json', 'w') as json_file:
+with open('train_mapping.json', 'w') as json_file:
     json.dump(train_mapping, json_file)
     
 with open('val_mapping.json', 'w') as json_file:
@@ -107,7 +107,6 @@ def make_dataset(list_file, data_dir):
             images.append("%s/%s"%(data_dir,image))
             label = image
             labels.append("%s/%s"%(data_dir,label))
-
 
         return images, labels
 
