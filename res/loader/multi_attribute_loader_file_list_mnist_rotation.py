@@ -14,8 +14,6 @@ import os.path
 import torch
 from PIL import Image
 
-directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
-file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 train_mapping = {}
 val_mapping = {}
 
@@ -45,7 +43,7 @@ with open('fairface_label_val.csv', 'r') as csv_file:
 
 # write the dictionary to a JSON file
 with open('mapping.json', 'w') as json_file:
-    json.dump(mapping, json_file)
+    json.dump(train_mapping, json_file)
     
 with open('val_mapping.json', 'w') as json_file:
     json.dump(val_mapping, json_file)
@@ -78,11 +76,11 @@ for filename in os.listdir(directory):
     new_filename = f"{gender}_{race}_{filename}"
     new_filenames.append(new_filename)
 
-    old_file_path = os.path.join(directory, filename)
+    old_file_path = os.path.join(train_directory, filename)
 
     # loop through each new file name and rename the file
     for new_filename in new_filenames:
-        new_file_path = os.path.join(directory, new_filename)
+        new_file_path = os.path.join(train_directory, new_filename)
         os.rename(old_file_path, new_file_path)
         old_file_path = new_file_path
         
