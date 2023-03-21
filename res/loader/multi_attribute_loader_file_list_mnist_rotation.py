@@ -66,7 +66,7 @@ file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 abs_file_path = os.path.abspath(file_path)
 
 # loop through each file in the directory
-for filename in os.listdir(directory):
+for filename in os.listdir(train_directory):
     # create the full file paths for the old and new filenames
     la = train_mapping[filename]
     gender = int(la[0])
