@@ -16,7 +16,7 @@ from PIL import Image
 
 train_mapping = {}
 val_mapping = {}
-test_mapping
+test_mapping = {}
 
 # open the CSV file
 with open('fairface_label_train.csv', 'r') as csv_file:
