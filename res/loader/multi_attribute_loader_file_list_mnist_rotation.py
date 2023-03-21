@@ -31,7 +31,7 @@ with open('fairface_label_train.csv', 'r') as csv_file:
         filename, gender, race = row
 
         # add the mapping to the dictionary
-        mapping[filename] = gender, race
+        train_mapping[filename] = gender, race
         
 # open the val CSV file
 with open('fairface_label_val.csv', 'r') as csv_file:
@@ -56,9 +56,9 @@ val_df = pd.read_csv('fairface_label_val.csv')
 
 # load the mapping file
 with open('train_mapping.json') as f:
-    mapping = json.load(f)
+    train_mapping = json.load(f)
 with open('val_mapping.json') as f:
-    mapping = json.load(f)
+    val_mapping = json.load(f)
 
 # set the directory where the files are located
 # set the directory where the files are located
@@ -70,7 +70,7 @@ abs_file_path = os.path.abspath(file_path)
 # loop through each file in the directory
 for filename in os.listdir(directory):
     # create the full file paths for the old and new filenames
-    la = mapping[filename]
+    la = train_mapping[filename]
     gender = int(la[0])
     race = int(la[1])
 
