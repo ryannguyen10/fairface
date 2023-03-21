@@ -16,9 +16,8 @@ from PIL import Image
 
 directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
-new_filenames = []
-
-mapping = {}
+train_mapping = {}
+val_mapping = {}
 
 # open the CSV file
 with open('fairface_label_train.csv', 'r') as csv_file:
@@ -33,27 +32,38 @@ with open('fairface_label_train.csv', 'r') as csv_file:
 
         # add the mapping to the dictionary
         mapping[filename] = gender, race
+        
+# open the val CSV file
+with open('fairface_label_val.csv', 'r') as csv_file:
+    csv_reader = csv.reader(csv_file)
 
-# write the mapping to a file
-with open('mapping.txt', 'w') as map_file:
-    for filename, label in mapping.items():
-        map_file.write(f"{filename} {label}\n")
+    next(csv_reader) # skip the header row
+
+    for row in csv_reader:
+        filename, gender, race = row
+        val_mapping[filename] = gender, race
 
 # write the dictionary to a JSON file
 with open('mapping.json', 'w') as json_file:
     json.dump(mapping, json_file)
+    
+with open('val_mapping.json', 'w') as json_file:
+    json.dump(val_mapping, json_file)
 
 # load the CSV file into a DataFrame
-df = pd.read_csv('fairface_label_train.csv')
+train_df = pd.read_csv('fairface_label_train.csv')
+val_df = pd.read_csv('fairface_label_val.csv')
 
 # load the mapping file
-with open('mapping.json') as f:
+with open('train_mapping.json') as f:
+    mapping = json.load(f)
+with open('val_mapping.json') as f:
     mapping = json.load(f)
 
-
 # set the directory where the files are located
-directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
-
+# set the directory where the files are located
+train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
+val_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/val'
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 abs_file_path = os.path.abspath(file_path)
 
@@ -76,6 +86,17 @@ for filename in os.listdir(directory):
         os.rename(old_file_path, new_file_path)
         old_file_path = new_file_path
         
+# loop through val file
+for filename in os.listdir(val_directory):
+    if filename in val_mapping:
+        la = val_mapping[filename]
+        gender = int(la[0])
+        race = int(la[1])
+        new_filename = f"{gender}_{race}_{filename}"
+        old_file_path = os.path.join(val_directory, filename)
+        new_file_path = os.path.join(val_directory, new_filename)
+        os.rename(old_file_path, new_file_path)
+
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
