@@ -80,8 +80,6 @@ with open('test_mapping.json') as f:
 train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 val_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/val'
 test_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/test'
-file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
-abs_file_path = os.path.abspath(file_path)
 
 # loop through train file in the directory
 for filename in os.listdir(train_directory):
