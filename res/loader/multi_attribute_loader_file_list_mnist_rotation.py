@@ -18,7 +18,7 @@ train_mapping = {}
 val_mapping = {}
 test_mapping = {}
 
-# open the CSV file
+# open the train CSV file
 with open('fairface_label_train.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
 
@@ -29,7 +29,7 @@ with open('fairface_label_train.csv', 'r') as csv_file:
     for row in csv_reader:
         filename, gender, race = row
         train_mapping[filename] = gender, race
-        
+
 # open the val CSV file
 with open('fairface_label_val.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
@@ -39,7 +39,7 @@ with open('fairface_label_val.csv', 'r') as csv_file:
     for row in csv_reader:
         filename, gender, race = row
         val_mapping[filename] = gender, race
-        
+
 # open the CSV file
 with open('fairface_label_test.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
@@ -55,10 +55,10 @@ with open('fairface_label_test.csv', 'r') as csv_file:
 # write the dictionary to a JSON file
 with open('train_mapping.json', 'w') as json_file:
     json.dump(train_mapping, json_file)
-    
+
 with open('val_mapping.json', 'w') as json_file:
     json.dump(val_mapping, json_file)
-    
+
 with open('test_mapping.json', 'w') as json_file:
     json.dump(val_mapping, json_file)
 
@@ -74,8 +74,7 @@ with open('val_mapping.json') as f:
     val_mapping = json.load(f)
 with open('test_mapping.json') as f:
     val_mapping = json.load(f)
-
-# set the directory where the files are located
+    
 # set the directory where the files are located
 train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 val_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/val'
@@ -91,7 +90,7 @@ for filename in os.listdir(train_directory):
         trainold_file_path = os.path.join(train_directory, filename)
         trainnew_file_path = os.path.join(train_directory, trainnew_filename)
         os.rename(trainold_file_path, trainnew_file_path)
-        
+
 # loop through val file
 for filename in os.listdir(val_directory):
     if filename in val_mapping:
@@ -103,7 +102,6 @@ for filename in os.listdir(val_directory):
         valnew_file_path = os.path.join(val_directory, valnew_filename)
         os.rename(valold_file_path, valnew_file_path)
 
-# loop through test file
 for filename in os.listdir(test_directory):
     if filename in test_mapping:
         la = test_mapping[filename]
@@ -113,7 +111,7 @@ for filename in os.listdir(test_directory):
         testold_file_path = os.path.join(test_directory, filename)
         testnew_file_path = os.path.join(test_directory, testnew_filename)
         os.rename(testold_file_path, testnew_file_path)
-  
+
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
