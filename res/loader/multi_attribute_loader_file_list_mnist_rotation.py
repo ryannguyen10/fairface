@@ -83,24 +83,16 @@ test_directory = '/content/fairface/data/facial_image/fairface-img-margin025-tra
 file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
 abs_file_path = os.path.abspath(file_path)
 
-# loop through each file in the directory
+# loop through train file in the directory
 for filename in os.listdir(train_directory):
-    # create the full file paths for the old and new filenames
-    la = train_mapping[filename]
-    gender = int(la[0])
-    race = int(la[1])
-
-    new_filenames = []
-    new_filename = f"{gender}_{race}_{filename}"
-    new_filenames.append(new_filename)
-
-    old_file_path = os.path.join(train_directory, filename)
-
-    # loop through each new file name and rename the file
-    for new_filename in new_filenames:
-        new_file_path = os.path.join(train_directory, new_filename)
-        os.rename(old_file_path, new_file_path)
-        old_file_path = new_file_path
+    if filename in train_mapping:
+        la = train_mapping[filename]
+        gender = int(la[0])
+        race = int(la[1])
+        trainnew_filename = f"{gender}_{race}_{filename}"
+        trainold_file_path = os.path.join(train_directory, filename)
+        trainnew_file_path = os.path.join(train_directory, trainnew_filename)
+        os.rename(trainold_file_path, trainnew_file_path)
         
 # loop through val file
 for filename in os.listdir(val_directory):
@@ -113,7 +105,7 @@ for filename in os.listdir(val_directory):
         new_file_path = os.path.join(val_directory, new_filename)
         os.rename(old_file_path, new_file_path)
         
-# loop through val file
+# loop through test file
 for filename in os.listdir(test_directory):
     if filename in test_mapping:
         la = test_mapping[filename]
