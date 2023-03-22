@@ -60,7 +60,7 @@ with open('val_mapping.json', 'w') as json_file:
     json.dump(val_mapping, json_file)
 
 with open('test_mapping.json', 'w') as json_file:
-    json.dump(val_mapping, json_file)
+    json.dump(test_mapping, json_file)
 
 # load the CSV file into a DataFrame
 train_df = pd.read_csv('fairface_label_train.csv')
