@@ -100,22 +100,22 @@ for filename in os.listdir(val_directory):
         la = val_mapping[filename]
         gender = int(la[0])
         race = int(la[1])
-        new_filename = f"{gender}_{race}_{filename}"
-        old_file_path = os.path.join(val_directory, filename)
-        new_file_path = os.path.join(val_directory, new_filename)
-        os.rename(old_file_path, new_file_path)
-        
+        valnew_filename = f"{gender}_{race}_{filename}"
+        valold_file_path = os.path.join(val_directory, filename)
+        valnew_file_path = os.path.join(val_directory, valnew_filename)
+        os.rename(valold_file_path, valnew_file_path)
+
 # loop through test file
 for filename in os.listdir(test_directory):
     if filename in test_mapping:
         la = test_mapping[filename]
         gender = int(la[0])
         race = int(la[1])
-        new_filename = f"{gender}_{race}_{filename}"
-        old_file_path = os.path.join(test_directory, filename)
-        new_file_path = os.path.join(test_directory, new_filename)
-        os.rename(old_file_path, new_file_path)
-
+        testnew_filename = f"{gender}_{race}_{filename}"
+        testold_file_path = os.path.join(test_directory, filename)
+        testnew_file_path = os.path.join(test_directory, testnew_filename)
+        os.rename(testold_file_path, testnew_file_path)
+  
 def make_dataset(list_file, data_dir):
         images = []
         labels = []
