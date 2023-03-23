@@ -72,7 +72,7 @@ train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-tr
 val_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/val'
 test_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/test'
 
-# loop through train file in the directory
+# loop through train files in the directory
 for filename in os.listdir(train_directory):
     if filename in train_mapping:
         la = train_mapping[filename]
@@ -83,7 +83,7 @@ for filename in os.listdir(train_directory):
         trainnew_file_path = os.path.join(train_directory, trainnew_filename)
         os.rename(trainold_file_path, trainnew_file_path)
 
-# loop through val file
+# loop through val files in the directory
 for filename in os.listdir(val_directory):
     if filename in val_mapping:
         la = val_mapping[filename]
@@ -94,6 +94,7 @@ for filename in os.listdir(val_directory):
         valnew_file_path = os.path.join(val_directory, valnew_filename)
         os.rename(valold_file_path, valnew_file_path)
         
+# loop through test files in the directory
 for filename in os.listdir(test_directory):
     if filename in test_mapping:
         la = test_mapping[filename]
