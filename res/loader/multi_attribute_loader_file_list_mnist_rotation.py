@@ -51,12 +51,31 @@ with open('fairface_label_test.csv', 'r') as csv_file:
     for row in csv_reader:
         filename, gender, race = row
         test_mapping[filename] = gender, race
+        
+        
+# write the mapping to a file
+with open('train_mapping.txt', 'w') as map_file:
+    for filename, label in train_mapping.items():
+        map_file.write(f"{filename} {label}\n")
+
+# write the mapping to a file
+with open('val_mapping.txt', 'w') as map_file:
+    for filename, label in val_mapping.items():
+        map_file.write(f"{filename} {label}\n")
+  
+# write the mapping to a file
+with open('test_mapping.txt', 'w') as map_file:
+    for filename, label in test_mapping.items():
+        map_file.write(f"{filename} {label}\n")
 
 # write the dictionary to a JSON file
 with open('train_mapping.json', 'w') as json_file:
     json.dump(train_mapping, json_file)
 
 with open('val_mapping.json', 'w') as json_file:
+    json.dump(val_mapping, json_file)
+    
+with open('test_mapping.json', 'w') as json_file:
     json.dump(val_mapping, json_file)
 
 # load the mapping file
