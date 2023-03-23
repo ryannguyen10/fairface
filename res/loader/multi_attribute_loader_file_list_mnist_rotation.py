@@ -39,6 +39,18 @@ with open('fairface_label_val.csv', 'r') as csv_file:
     for row in csv_reader:
         filename, gender, race = row
         val_mapping[filename] = gender, race
+        
+# open the CSV file
+with open('fairface_label_test.csv', 'r') as csv_file:
+    csv_reader = csv.reader(csv_file)
+
+    # skip the header row
+    next(csv_reader)
+
+    # loop through the rows in the CSV file
+    for row in csv_reader:
+        filename, gender, race = row
+        test_mapping[filename] = gender, race
 
 # write the dictionary to a JSON file
 with open('train_mapping.json', 'w') as json_file:
@@ -57,6 +69,8 @@ with open('train_mapping.json') as f:
     train_mapping = json.load(f)
 with open('val_mapping.json') as f:
     val_mapping = json.load(f)
+with open('test_mapping.json', 'w') as json_file:
+    json.dump(val_mapping, json_file)
     
 # set the directory where the files are located
 train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
@@ -84,6 +98,16 @@ for filename in os.listdir(val_directory):
         valold_file_path = os.path.join(val_directory, filename)
         valnew_file_path = os.path.join(val_directory, valnew_filename)
         os.rename(valold_file_path, valnew_file_path)
+        
+for filename in os.listdir(test_directory):
+    if filename in test_mapping:
+        la = test_mapping[filename]
+        gender = int(la[0])
+        race = int(la[1])
+        testnew_filename = f"{gender}_{race}_{filename}"
+        testold_file_path = os.path.join(test_directory, filename)
+        testnew_file_path = os.path.join(test_directory, testnew_filename)
+        os.rename(testold_file_path, testnew_file_path)
 
 def make_dataset(list_file, data_dir):
         images = []
