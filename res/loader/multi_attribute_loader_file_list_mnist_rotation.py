@@ -59,11 +59,6 @@ with open('train_mapping.json', 'w') as json_file:
 with open('val_mapping.json', 'w') as json_file:
     json.dump(val_mapping, json_file)
 
-# load the CSV file into a DataFrame
-train_df = pd.read_csv('fairface_label_train.csv')
-val_df = pd.read_csv('fairface_label_val.csv')
-test_df = pd.read_csv('fairface_label_test.csv')
-
 # load the mapping file
 with open('train_mapping.json') as f:
     train_mapping = json.load(f)
