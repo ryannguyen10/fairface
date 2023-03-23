@@ -14,11 +14,9 @@ import os.path
 import torch
 from PIL import Image
 
-train_mapping = {}
-val_mapping = {}
-test_mapping = {}
+mapping = {}
 
-# open the train CSV file
+# open the CSV file
 with open('fairface_label_train.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
 
@@ -28,101 +26,56 @@ with open('fairface_label_train.csv', 'r') as csv_file:
     # loop through the rows in the CSV file
     for row in csv_reader:
         filename, gender, race = row
-        train_mapping[filename] = gender, race
 
-# open the val CSV file
-with open('fairface_label_val.csv', 'r') as csv_file:
-    csv_reader = csv.reader(csv_file)
-
-    next(csv_reader) # skip the header row
-
-    for row in csv_reader:
-        filename, gender, race = row
-        val_mapping[filename] = gender, race
-        
-# open the CSV file
-with open('fairface_label_test.csv', 'r') as csv_file:
-    csv_reader = csv.reader(csv_file)
-
-    # skip the header row
-    next(csv_reader)
-
-    # loop through the rows in the CSV file
-    for row in csv_reader:
-        filename, gender, race = row
-        test_mapping[filename] = gender, race
-        
-        
-# write the mapping to a file
-with open('train_mapping.txt', 'w') as map_file:
-    for filename, label in train_mapping.items():
-        map_file.write(f"{filename} {label}\n")
+        # add the mapping to the dictionary
+        mapping[filename] = gender, race
 
 # write the mapping to a file
-with open('val_mapping.txt', 'w') as map_file:
-    for filename, label in val_mapping.items():
-        map_file.write(f"{filename} {label}\n")
-  
-# write the mapping to a file
-with open('test_mapping.txt', 'w') as map_file:
-    for filename, label in test_mapping.items():
+with open('mapping.txt', 'w') as map_file:
+    for filename, label in mapping.items():
         map_file.write(f"{filename} {label}\n")
 
+Code cell <0VfDkYXJ4l6e>
+# %% [code]
 # write the dictionary to a JSON file
-with open('train_mapping.json', 'w') as json_file:
-    json.dump(train_mapping, json_file)
+with open('mapping.json', 'w') as json_file:
+    json.dump(mapping, json_file)
 
-with open('val_mapping.json', 'w') as json_file:
-    json.dump(val_mapping, json_file)
-    
-with open('test_mapping.json', 'w') as json_file:
-    json.dump(val_mapping, json_file)
+Code cell <tb1x-qJ63yGT>
+# %% [code]
+# load the CSV file into a DataFrame
+df = pd.read_csv('fairface_label_train.csv')
 
 # load the mapping file
-with open('train_mapping.json') as f:
-    train_mapping = json.load(f)
-with open('val_mapping.json') as f:
-    val_mapping = json.load(f)
-with open('test_mapping.json', 'w') as json_file:
-    json.dump(val_mapping, json_file)
-    
+with open('mapping.json') as f:
+    mapping = json.load(f)
+
+Code cell <w1MPEzb95Nd5>
+# %% [code]
 # set the directory where the files are located
-train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
-val_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/val'
-test_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/test'
+directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 
-# loop through train files in the directory
-for filename in os.listdir(train_directory):
-    if filename in train_mapping:
-        la = train_mapping[filename]
-        gender = int(la[0])
-        race = int(la[1])
-        trainnew_filename = f"{gender}_{race}_{filename}"
-        trainold_file_path = os.path.join(train_directory, filename)
-        trainnew_file_path = os.path.join(train_directory, trainnew_filename)
-        os.rename(trainold_file_path, trainnew_file_path)
+file_path = "/content/fairface/dataset_lists/train_list_fairface.txt"
+abs_file_path = os.path.abspath(file_path)
 
-# loop through val files in the directory
-for filename in os.listdir(val_directory):
-    if filename in val_mapping:
-        la = val_mapping[filename]
-        gender = int(la[0])
-        race = int(la[1])
-        valnew_filename = f"{gender}_{race}_{filename}"
-        valold_file_path = os.path.join(val_directory, filename)
-        valnew_file_path = os.path.join(val_directory, valnew_filename)
-        os.rename(valold_file_path, valnew_file_path)
-        
-# loop through test files in the directory
-for filename in os.listdir(test_directory):
-    if filename in test_mapping:
-        la = test_mapping[filename]
-        gender = int(la[0])
-        race = int(la[1])
-        testnew_filename = f"{gender}_{race}_{filename}"
-        testold_file_path = os.path.join(test_directory, filename)
-        testnew_file_path = os.path.join(test_directory, testnew_filename)
-        os.rename(testold_file_path, testnew_file_path)
+# loop through each file in the directory
+for filename in os.listdir(directory):
+    # create the full file paths for the old and new filenames
+    la = mapping[filename]
+    gender = int(la[0])
+    race = int(la[1])
+
+    new_filenames = []
+    new_filename = f"{gender}_{race}_{filename}"
+    new_filenames.append(new_filename)
+
+    old_file_path = os.path.join(directory, filename)
+
+    # loop through each new file name and rename the file
+    for new_filename in new_filenames:
+        new_file_path = os.path.join(directory, new_filename)
+        os.rename(old_file_path, new_file_path)
+        old_file_path = new_file_path
 
 def make_dataset(list_file, data_dir):
         images = []
@@ -136,6 +89,7 @@ def make_dataset(list_file, data_dir):
             images.append("%s/%s"%(data_dir,image))
             label = image
             labels.append("%s/%s"%(data_dir,label))
+
 
         return images, labels
 
