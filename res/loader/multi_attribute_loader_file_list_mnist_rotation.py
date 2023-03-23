@@ -35,14 +35,10 @@ with open('mapping.txt', 'w') as map_file:
     for filename, label in mapping.items():
         map_file.write(f"{filename} {label}\n")
 
-Code cell <0VfDkYXJ4l6e>
-# %% [code]
 # write the dictionary to a JSON file
 with open('mapping.json', 'w') as json_file:
     json.dump(mapping, json_file)
 
-Code cell <tb1x-qJ63yGT>
-# %% [code]
 # load the CSV file into a DataFrame
 df = pd.read_csv('fairface_label_train.csv')
 
@@ -50,8 +46,6 @@ df = pd.read_csv('fairface_label_train.csv')
 with open('mapping.json') as f:
     mapping = json.load(f)
 
-Code cell <w1MPEzb95Nd5>
-# %% [code]
 # set the directory where the files are located
 directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
 
