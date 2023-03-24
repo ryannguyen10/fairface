@@ -86,9 +86,9 @@ with open('test_mapping.json') as f:
     test_mapping = json.load(f)
     
 # set the directory where the files are located
-train_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/train'
-val_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/val'
-test_directory = '/content/fairface/data/facial_image/fairface-img-margin025-trainval/test'
+train_directory = '/content/fairface/data/facial_image/train'
+val_directory = '/content/fairface/data/facial_image/val'
+test_directory = '/content/fairface/data/facial_image/test'
 
 # loop through train file in the directory
 for filename in os.listdir(train_directory):
